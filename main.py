@@ -1,3 +1,7 @@
+import random
+import itertools
+import collections
+
 def extract_alphabet(data):
     alpha = set()
     for datum in data:
