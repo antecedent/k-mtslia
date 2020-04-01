@@ -1,6 +1,3 @@
-import itertools
-import collections
-
 def extract_alphabet(data):
     alpha = set()
     for datum in data:
@@ -10,17 +7,19 @@ def extract_alphabet(data):
 def extract_local_k_grams(data, k, edges):
     attested = set()
     for datum in data:
-        datum = (edges[0],) + tuple(datum) + (edges[1],) 
+        datum = (edges[0],) * (k - 1) + tuple(datum) + (edges[1],) * (k - 1)
         for offset in range(len(datum) - k + 1):
             attested.add(tuple(datum[offset:(offset + k)]))
     return attested
 
 def valid_k_gram(k_gram, edges):
     k = len(k_gram)
-    return any(True for L, R in itertools.combinations(range(k + 1), 2) \
+    return any(True for L, R in itertools.product(range(k + 1), repeat=2) \
                if  all(k_gram[i] == edges[0]  for i in range(L)) \
                and all(k_gram[i] == edges[1]  for i in range(R, k)) \
-               and not any(k_gram[i] in edges for i in range(L, R)))
+               and not any(k_gram[i] in edges for i in range(L, R)) \
+               and not any({*k_gram} == {e} for e in edges) \
+               if L <= R)
 
 def mtslia(data, k=2, edges=('>', '<')):
     alpha = extract_alphabet(data)
