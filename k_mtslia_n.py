@@ -28,11 +28,11 @@ def map_k_gram_to_tier(k_gram, data, edges):
     k = len(k_gram)
     projection = []
     for m, datum in enumerate(data):
-        projection += [(m, -(i + 1), edges[0]) for i in range(k)]
+        projection += [(m, -1, edges[0]) for i in range(k - 1)]
         for n, segment in enumerate(datum):
             if segment in k_gram:
                 projection += [(m, n, segment)]
-        projection += [(m, len(datum) + i, edges[1]) for i in range(k)]
+        projection += [(m, len(datum), edges[1]) for i in range(k - 1)]
     blocker_sets = set()
     for offset in range(len(projection) - k + 1):
         M, N, segments = zip(*projection[offset:(offset + k)])
