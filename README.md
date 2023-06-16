@@ -60,7 +60,8 @@ Let us interpret the first line of the output. `>` and `<` are word boundary sym
 
 - {i, m, >, <},
 - {i, u, >, <},
-- {m, >, <}, 
+- {m, >, <},
+- {m, u, >, <},
 - and any superset of the above.
 
 In other words, these are the tiers that satisfy the formula _and_ contain the restricted trigram's symbols. 
