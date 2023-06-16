@@ -23,3 +23,44 @@ print(
   k_mtslia.scan('mimu', G),  # ⇒ False
 )
 ```
+
+## Inspecting the grammar
+
+```python
+for n_gram, tier_conditions in G:
+  print(
+    '*' + ''.join(n_gram), 
+    ' ∧ '.join('(' + ' ∨ '.join(clause) + ')' for clause in tier_conditions)
+  )
+```
+
+This prints out the following:
+
+```
+*><< (i ∨ m) ∧ (m ∨ u)
+*>>< (i ∨ m) ∧ (m ∨ u)
+*>u<
+*>ui
+*>um
+*>i<
+*>iu
+*>im
+*>m<
+*>mm (i) ∧ (u)
+*uu< (m)
+*uuu (m)
+*uui
+*ui<
+*uiu
+```
+
+and 22 more lines.
+
+Let us interpret the first line of the output. `>` and `<` are word boundary symbols, added automatically to each string by _k_-MTSLIA. `*><<` is the restriction that the trigram `><<` must not occur on certain tiers. The formula `(i ∨ m) ∧ (m ∨ u)` specifies that these are the following tiers:
+
+- {i, m, >, <},
+- {i, u, >, <},
+- {m, >, <}, 
+- and any superset of the above.
+
+In other words, these are the tiers that satisfy the formula _and_ contain the restricted trigram's symbols. 
